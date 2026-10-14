@@ -1,0 +1,7 @@
+# Personal GPS tracks and summaries contain locations. Keep them on your own computer, never in the repository.
+my-tracks/
+*.track.json
+*.summary.csv
+campus-track*.json
+campus-move*.csv
+.DS_Store

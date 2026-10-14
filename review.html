@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#222824">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="style.css">
+<title>匯入檢視 · PACE 校園運動</title>
+<style>
+body{background:var(--paper);color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;margin:0}
+.review{max-width:1040px;margin:0 auto;padding:22px 18px 64px}
+.rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.rtop .brand{color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:.04em}
+.rtop nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:14px}
+.rtop nav a.active{color:var(--ink);font-weight:700}
+h1{font-size:28px;margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 18px;font-size:14px;line-height:1.6}
+.drop{background:#fff;border:1.5px dashed #b9c0aa;border-radius:14px;padding:26px 18px;text-align:center}
+.drop input{font:inherit}
+#status{margin:12px 0 0;min-height:1.4em;color:var(--muted);font-size:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stats div{background:var(--paper);border-radius:10px;padding:12px}
+.stats span{display:block;color:var(--muted);font-size:12px}
+.stats strong{font-size:24px}
+.stats small{color:var(--muted);font-size:12px;margin-left:4px}
+#reviewMap{height:380px;border-radius:12px;margin-top:12px;border:1px solid var(--line)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;margin:0;font-size:14px}
+dt{color:var(--muted)}
+dd{margin:0;word-break:break-word}
+.note{color:var(--muted);font-size:13px;line-height:1.6;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+.table-wrap{overflow-x:auto}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}dl{grid-template-columns:1fr}dt{margin-top:6px}}
+</style>
+</head>
+<body>
+<main class="review">
+<header class="rtop">
+  <a class="brand" href="index.html">PACE 校園運動</a>
+  <nav><a href="index.html">開始運動</a><a class="active" href="review.html">匯入檢視</a><a href="handout.html">學習中心</a></nav>
+</header>
+<h1>匯入運動紀錄</h1>
+<p class="lead">在「運動紀錄」按「軌跡」下載的 JSON，可以在這裡看到路線、起點、集合點與詳細數據。在「運動紀錄」按「摘要」下載的 CSV，可以一次看多筆摘要。檔案只在你的瀏覽器中讀取，不會上傳。</p>
+
+<section class="drop" id="drop">
+  <input id="file" type="file" accept=".json,.csv,application/json,text/csv" multiple>
+  <p class="note">也可以把檔案拖曳到這個框內。一次開啟一份軌跡 JSON，或一份摘要 CSV。</p>
+</section>
+<p id="status" role="status" aria-live="polite"></p>
+
+<section class="card" id="detail" hidden>
+  <div class="stats">
+    <div><span>累積距離</span><strong id="statDistance">0.00</strong><small>km</small></div>
+    <div><span>運動時間</span><strong id="statTime">00:00</strong></div>
+    <div><span>平均速度</span><strong id="statSpeed">0.0</strong><small>km/h</small></div>
+    <div><span>估算熱量</span><strong id="statKcal">0</strong><small>kcal</small></div>
+  </div>
+  <div id="reviewMap" aria-label="運動軌跡地圖"></div>
+  <p class="note">藍色終點與綠色起點之間為實際記錄的軌跡。若有設定集合點，虛線為終點到集合點的直線距離，不是步行路線。</p>
+  <dl id="facts" style="margin-top:14px"></dl>
+</section>
+
+<section class="card" id="list" hidden>
+  <div id="listSummary" class="note"></div>
+  <div class="table-wrap"><table><thead id="listHead"></thead><tbody id="listBody"></tbody></table></div>
+</section>
+</main>
+<script src="vendor/leaflet.js"></script>
+<script src="tiles.js"></script>
+<script src="core.js"></script>
+<script src="review.js"></script>
+</body>
+</html>
